@@ -10,14 +10,14 @@ public class Main {
             boolean fileExists = file.exists();
             boolean isDirectory = file.isDirectory();
             if (isDirectory) {
-                System.out.println("Путь указан неверно");continue;
+                System.out.println("Путь указан неверно.");continue;
             }
             if (fileExists) {
-                System.out.println("Путь указан верно");
+                System.out.println("Путь указан верно.");
                 n = n + 1;
                 System.out.println("Это файл номер " + n);
             } else {
-                System.out.println("Путь указан неверно");
+                System.out.println("Путь указан неверно.");
             }
         }
     }
