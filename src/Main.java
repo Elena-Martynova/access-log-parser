@@ -9,10 +9,10 @@ public class Main {
             File file = new File(path);
             boolean fileExists = file.exists();
             boolean isDirectory = file.isDirectory();
-            if (isDirectory == true) {
+            if (isDirectory) {
                 System.out.println("Путь указан неверно");continue;
             }
-            if (fileExists == true) {
+            if (fileExists) {
                 System.out.println("Путь указан верно");
                 n = n + 1;
                 System.out.println("Это файл номер " + n);
