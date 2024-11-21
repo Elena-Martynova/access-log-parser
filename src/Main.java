@@ -22,12 +22,11 @@ public class Main {
             BufferedReader reader = new BufferedReader(fileReader);
             String line;
             int lineCounter = 0;
-            int length = 0;
             int maxLineLength = 0;
             line = reader.readLine();
             int minLineLength = line.length();
             while ((line = reader.readLine()) != null) {
-                length = line.length();
+                int length = line.length();
                 lineCounter += 1;
                 if (length > maxLineLength) {
                     maxLineLength = length;
