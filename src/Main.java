@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class Main {
@@ -11,7 +12,7 @@ public class Main {
     public static int counterGoogle = 0;
 
     public static void main(String[] args) {
-
+        System.out.println("Введите путь к файлу: ");
         String path = new Scanner(System.in).nextLine();
         File file = new File(path);
         boolean fileExists = file.exists();
@@ -33,8 +34,9 @@ public class Main {
             double partOfYandex = 0;
             double partOfGoogle = 0;
             while ((line = reader.readLine()) != null) {
+
                 int length = line.length();
-                lineCounter += 1;
+                lineCounter++;
                 if (length > maxLineLength) {
                     maxLineLength = length;
                 }
@@ -49,8 +51,8 @@ public class Main {
                         String fragmentBot = fragment.substring(0, fragment.indexOf("/"));
                         if (fragmentBot.equals(botGoogle)) counterGoogle++;
                         if (fragmentBot.equals(botYandex)) counterYandex++;
-                        partOfYandex = (double) counterYandex * 100 / lineCounter;
-                        partOfGoogle = (double) counterGoogle * 100 / lineCounter;
+                        partOfYandex = (double) counterYandex / lineCounter * 100;
+                        partOfGoogle = (double) counterGoogle / lineCounter * 100;
                     }
                 }
             }
@@ -70,6 +72,7 @@ public class Main {
 //    static String getValueOfString(String line, String param) {
 //        return line.replaceAll(REGEXP, param);
 //    }
+
 }
 
 class MaxLineException extends Exception {
@@ -77,4 +80,3 @@ class MaxLineException extends Exception {
         super(message);
     }
 }
-
