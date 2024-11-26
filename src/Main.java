@@ -60,8 +60,8 @@ public class Main {
             System.out.println("Количество запросов YandexBot: " + counterYandex);
             System.out.println("Количество запросов Googlebot: " + counterGoogle);
             System.out.println("Количество строк в файле: " + lineCounter);
-            System.out.println("Доля запросов YandexBot: " + partOfYandex);
-            System.out.println("Доля запросов Googlebot: " + partOfGoogle);
+            System.out.println("Доля запросов YandexBot: " + String.format("%.2f",partOfYandex));
+            System.out.println("Доля запросов Googlebot: " + String.format("%.2f",partOfGoogle));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
