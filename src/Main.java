@@ -69,9 +69,10 @@ public class Main {
         }
     }
 
-    static String getValueOfString(String line, String param) {
-        return line.replaceAll(REGEXP, param);
-    }
+//    static String getValueOfString(String line, String param) {
+//        return line.replaceAll(REGEXP, param);
+//    }
+
 }
 
 class MaxLineException extends Exception {
@@ -79,5 +80,3 @@ class MaxLineException extends Exception {
         super(message);
     }
 }
-
-
