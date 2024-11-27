@@ -30,8 +30,10 @@ public class MainLogEntry {
                 statistics.addEntry(logEntry);
             }
             System.out.println(statistics.getTrafficRate());
-            System.out.println(statistics.getAllPages());
+            System.out.println(statistics.getExistingPages());
+            System.out.println(statistics.getNotExistingPages());
             System.out.println(statistics.getOSStatistics());
+            System.out.println(statistics.getBrowserStatistics());
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -9,9 +9,10 @@ public class Statistics {
     int totalTraffic = 0;
     LocalDateTime minTime;
     LocalDateTime maxTime;
-    HashSet<String> hashSet = new HashSet<>();
-    HashMap<String, Integer> hashMap = new HashMap<>();
-//    UserAgent userAgent;
+    HashSet<String> ExistingPages = new HashSet<>();
+    HashMap<String, Integer> hashMapOS = new HashMap<>();
+    HashSet<String> notExistingPages = new HashSet<>();
+    HashMap<String, Integer> hashMapBrowser = new HashMap<>();
 
     public Statistics() {
     }
@@ -27,17 +28,30 @@ public class Statistics {
         }
         totalTraffic += logEntry.getContentLength();
         if (logEntry.getStatusCode() == 200) {
-            hashSet.add(logEntry.getReferrer()); // Добавляем адрес страницы, если код ответа 200
+            ExistingPages.add(logEntry.getReferrer()); // Добавляем адрес страницы, если код ответа 200
         }
         if (!logEntry.getUserAgent().equals("-")) {
             UserAgent agent = new UserAgent(logEntry.getUserAgent());
-            if (hashMap.containsKey(agent.getOs())) {
+            if (hashMapOS.containsKey(agent.getOs())) {
                 // Если есть, увеличиваем счетчик на 1
-                hashMap.put(agent.getOs(), hashMap.get(agent.getOs()) + 1);
+                hashMapOS.put(agent.getOs(), hashMapOS.get(agent.getOs()) + 1);
             } else {
                 // Если нет, добавляем новую запись с начальным значением 1
-                hashMap.put(agent.getOs(), 1);
+                hashMapOS.put(agent.getOs(), 1);
             }
+        }
+        if (!logEntry.getUserAgent().equals("-")) {
+            UserAgent agent = new UserAgent(logEntry.getUserAgent());
+            if (hashMapBrowser.containsKey(agent.getBrowser())) {
+                // Если есть, увеличиваем счетчик на 1
+                hashMapBrowser.put(agent.getBrowser(), hashMapBrowser.get(agent.getBrowser()) + 1);
+            } else {
+                // Если нет, добавляем новую запись с начальным значением 1
+                hashMapBrowser.put(agent.getBrowser(), 1);
+            }
+        }
+        if (logEntry.getStatusCode() == 404) {
+            notExistingPages.add(logEntry.getReferrer()); // Добавляем адрес страницы, если код ответа 404
         }
     }
 
@@ -47,15 +61,15 @@ public class Statistics {
         else return 0;
     }
 
-    public Set<String> getAllPages() {
-        return new HashSet<>(hashSet);
+    public Set<String> getExistingPages() {
+        return new HashSet<>(ExistingPages);
     }
 
     public Map<String, Double> getOSStatistics() {
         HashMap<String, Double> osShareMap = new HashMap<>();
 
         // Считаем общее количество записей
-        int totalCount = hashMap.values().stream().mapToInt(Integer::intValue).sum();
+        int totalCount = hashMapOS.values().stream().mapToInt(Integer::intValue).sum();
 
         // Если общее количество равно 0, возвращаем пустую карту
         if (totalCount == 0) {
@@ -63,7 +77,7 @@ public class Statistics {
         }
 
         // Рассчитываем долю для каждой операционной системы
-        for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
+        for (Map.Entry<String, Integer> entry : hashMapOS.entrySet()) {
             String osName = entry.getKey();
             Integer count = entry.getValue();
             double share = (double) count / totalCount;
@@ -71,5 +85,30 @@ public class Statistics {
         }
 
         return osShareMap;
+    }
+    public Set<String> getNotExistingPages() {
+        return new HashSet<>(notExistingPages);
+    }
+
+    public Map<String, Double> getBrowserStatistics() {
+        HashMap<String, Double> browserShareMap = new HashMap<>();
+
+        // Считаем общее количество записей
+        int totalCount = hashMapBrowser.values().stream().mapToInt(Integer::intValue).sum();
+
+        // Если общее количество равно 0, возвращаем пустое значение
+        if (totalCount == 0) {
+            return browserShareMap;
+        }
+
+        // Рассчитываем долю для каждого браузера
+        for (Map.Entry<String, Integer> entry : hashMapBrowser.entrySet()) {
+            String browserName = entry.getKey();
+            Integer count = entry.getValue();
+            double share = (double) count / totalCount;
+            browserShareMap.put(browserName, share);
+        }
+
+        return browserShareMap;
     }
 }
