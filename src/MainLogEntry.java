@@ -22,14 +22,16 @@ public class MainLogEntry {
             FileReader fileReader = new FileReader(path);
             BufferedReader reader = new BufferedReader(fileReader);
             String line;
-            LogEntry logEntry = null;
-            UserAgent userAgent;
+            LogEntry logEntry;
+
             Statistics statistics = new Statistics();
             while ((line = reader.readLine()) != null) {
                 logEntry = new LogEntry(line);
                 statistics.addEntry(logEntry);
             }
             System.out.println(statistics.getTrafficRate());
+            System.out.println(statistics.getAllPages());
+            System.out.println(statistics.getOSStatistics());
         } catch (Exception ex) {
             ex.printStackTrace();
         }

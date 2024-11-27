@@ -1,7 +1,6 @@
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Locale;
 
 public class LogEntry {
@@ -25,13 +24,13 @@ public class LogEntry {
 
         OffsetDateTime offsetDateTime = OffsetDateTime.parse(getValueOfString(line,"$3"), formatter);
         this.data = offsetDateTime.toLocalDateTime();
-        method = HttpMethod.valueOf(getValueOfString(line,"$4"));
-        url = getValueOfString(line,"$5");
-        httpVersion = Double.parseDouble(getValueOfString(line,"$6"));
-        statusCode = Integer.parseInt(getValueOfString(line,"$7"));
-        contentLength = Integer.parseInt(getValueOfString(line,"$8"));
-        referrer = getValueOfString(line,"$9");
-        userAgent = getValueOfString(line,"$10");
+        this.method = HttpMethod.valueOf(getValueOfString(line,"$4"));
+        this.url = getValueOfString(line,"$5");
+        this.httpVersion = Double.parseDouble(getValueOfString(line,"$6"));
+        this.statusCode = Integer.parseInt(getValueOfString(line,"$7"));
+        this.contentLength = Integer.parseInt(getValueOfString(line,"$8"));
+        this.referrer = getValueOfString(line,"$9");
+        this.userAgent = getValueOfString(line,"$10");
     }
 
     static String getValueOfString(String line, String param) {
