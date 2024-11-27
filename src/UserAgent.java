@@ -1,6 +1,7 @@
 public class UserAgent {
     private final String browser;
     private final String os;
+//    private final String userAgent = new String();
 
     public UserAgent(String userAgent) {
         browser = extractBrowser(userAgent);
@@ -35,5 +36,11 @@ public class UserAgent {
         return userAgent.toLowerCase().contains("bot");
     }
 
+    public String getBrowser() {
+        return browser;
+    }
 
+    public String getOs() {
+        return os;
+    }
 }
