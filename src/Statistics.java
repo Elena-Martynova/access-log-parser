@@ -13,11 +13,18 @@ public class Statistics {
     HashMap<String, Integer> hashMapOS = new HashMap<>();
     HashSet<String> notExistingPages = new HashSet<>();
     HashMap<String, Integer> hashMapBrowser = new HashMap<>();
+    int browserVisitCount = 0;
+    int hoursCount = 0;
+    int errRequestsCount = 0;
+    int ipCount = 0;
+    int userCount = 0;
+    HashMap<String, Integer> hashMapUser = new HashMap<>();
 
     public Statistics() {
     }
 
     public void addEntry(LogEntry logEntry) {
+        UserAgent agent = new UserAgent(logEntry.getUserAgent());
         if (minTime == null) minTime = logEntry.getData();
         else if (logEntry.getData().isBefore(minTime)) {
             minTime = logEntry.getData();
@@ -31,7 +38,7 @@ public class Statistics {
             ExistingPages.add(logEntry.getReferrer()); // Добавляем адрес страницы, если код ответа 200
         }
         if (!logEntry.getUserAgent().equals("-")) {
-            UserAgent agent = new UserAgent(logEntry.getUserAgent());
+//            agent = new UserAgent(logEntry.getUserAgent());
             if (hashMapOS.containsKey(agent.getOs())) {
                 // Если есть, увеличиваем счетчик на 1
                 hashMapOS.put(agent.getOs(), hashMapOS.get(agent.getOs()) + 1);
@@ -41,7 +48,7 @@ public class Statistics {
             }
         }
         if (!logEntry.getUserAgent().equals("-")) {
-            UserAgent agent = new UserAgent(logEntry.getUserAgent());
+//            UserAgent agent = new UserAgent(logEntry.getUserAgent());
             if (hashMapBrowser.containsKey(agent.getBrowser())) {
                 // Если есть, увеличиваем счетчик на 1
                 hashMapBrowser.put(agent.getBrowser(), hashMapBrowser.get(agent.getBrowser()) + 1);
@@ -52,6 +59,24 @@ public class Statistics {
         }
         if (logEntry.getStatusCode() == 404) {
             notExistingPages.add(logEntry.getReferrer()); // Добавляем адрес страницы, если код ответа 404
+        }
+        if (!logEntry.getUserAgent().contains("bot")) {
+            browserVisitCount++;
+        }
+        hoursCount++;
+        ipCount++;
+        if (logEntry.getStatusCode()>=400 && logEntry.getStatusCode()<=500) {
+            errRequestsCount++;
+        }
+        if (!logEntry.getIp().equals("-")) {
+//            UserAgent agent = new UserAgent(logEntry.getUserAgent());
+            if (hashMapUser.containsKey(logEntry.getIp())) {
+                // Если есть, увеличиваем счетчик на 1
+                hashMapUser.put(logEntry.getIp(), hashMapUser.get(logEntry.getIp()) + 1);
+            } else {
+                // Если нет, добавляем новую запись с начальным значением 1
+                hashMapUser.put(logEntry.getIp(), 1);
+            }
         }
     }
 
@@ -86,6 +111,7 @@ public class Statistics {
 
         return osShareMap;
     }
+
     public Set<String> getNotExistingPages() {
         return new HashSet<>(notExistingPages);
     }
@@ -110,5 +136,29 @@ public class Statistics {
         }
 
         return browserShareMap;
+    }
+
+    // Среднее количества посещений сайта за час
+    public double getAverageVisitsPerHour() {
+        if (hoursCount == 0) {
+            return 0;
+        }
+        return (double) browserVisitCount / hoursCount;
+    }
+
+    // Среднее количества ошибочных запросов за час
+    public double getAverageErrRequestsPerHour() {
+        if (hoursCount == 0) {
+            return 0;
+        }
+        return (double) errRequestsCount / hoursCount;
+    }
+
+    // Средняя посещаемость одним пользователем
+    public double getAverageVisitsByUser() {
+        if (browserVisitCount == 0) {
+            return 0;
+        }
+        return (double) browserVisitCount/hashMapUser.size();
     }
 }
