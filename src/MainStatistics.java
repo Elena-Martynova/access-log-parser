@@ -3,7 +3,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.Scanner;
 
-public class MainLogEntry {
+public class MainStatistics {
     public static void main(String[] args) {
         System.out.println("Введите путь к файлу: ");
         String path = new Scanner(System.in).nextLine();
@@ -29,11 +29,14 @@ public class MainLogEntry {
                 logEntry = new LogEntry(line);
                 statistics.addEntry(logEntry);
             }
-            System.out.println(statistics.getTrafficRate());
-            System.out.println(statistics.getExistingPages());
-            System.out.println(statistics.getNotExistingPages());
-            System.out.println(statistics.getOSStatistics());
-            System.out.println(statistics.getBrowserStatistics());
+            System.out.println("TrafficRate: " + statistics.getTrafficRate());
+            System.out.println("ExistingPages: " + statistics.getExistingPages());
+            System.out.println("NotExistingPages: " + statistics.getNotExistingPages());
+            System.out.println("OSStatistics: " + statistics.getOSStatistics());
+            System.out.println("BrowserStatistics: " + statistics.getBrowserStatistics());
+            System.out.println("AverageVisitsPerHour " + statistics.getAverageVisitsPerHour());
+            System.out.println("AverageErrRequestsPerHour: " + statistics.getAverageErrRequestsPerHour());
+            System.out.println("AverageVisitsByUser: " + statistics.getAverageVisitsByUser());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
