@@ -3,7 +3,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.Scanner;
 
-public class MainLogEntry {
+public class MainStatistics {
     public static void main(String[] args) {
         System.out.println("Введите путь к файлу: ");
         String path = new Scanner(System.in).nextLine();

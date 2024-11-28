@@ -1,9 +1,10 @@
 public class UserAgent {
     private final String browser;
     private final String os;
-//    private final String userAgent = new String();
+    private final String userAgent;
 
     public UserAgent(String userAgent) {
+        this.userAgent = userAgent;
         browser = extractBrowser(userAgent);
         os = extractOsType(userAgent);
     }
@@ -32,7 +33,7 @@ public class UserAgent {
         return "Other";
     }
 
-    public boolean isBot(String userAgent) {
+    public boolean isBot() {
         return userAgent.toLowerCase().contains("bot");
     }
 
