@@ -37,6 +37,9 @@ public class MainStatistics {
             System.out.println("AverageVisitsPerHour " + statistics.getAverageVisitsPerHour());
             System.out.println("AverageErrRequestsPerHour: " + statistics.getAverageErrRequestsPerHour());
             System.out.println("AverageVisitsByUser: " + statistics.getAverageVisitsByUser());
+            System.out.println("MaxVisitsPerSecond: " + statistics.getVisitsForSecond());
+            System.out.println("ListOfReferrerDomains: " + statistics.getReferrerDomains());
+            System.out.println("MaxVisitsByUser: " + statistics.getMaxVisitsByUser());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
