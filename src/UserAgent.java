@@ -34,7 +34,7 @@ public class UserAgent {
     }
 
     public boolean isBot() {
-        return userAgent.toLowerCase().contains("bot");
+        return userAgent.toLowerCase().matches(".*bot\\b.*");
     }
 
     public String getBrowser() {

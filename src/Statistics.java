@@ -59,10 +59,14 @@ public class Statistics {
         }
 
         if (logEntry.getIp()!=null) {
+            if(!agent.isBot())
             // Если есть, увеличиваем счетчик на 1
-            if (hashMapUser.containsKey(logEntry.getIp())) hashMapUser.put(logEntry.getIp(), hashMapUser.get(logEntry.getIp()) + 1);
-            // Если нет, добавляем новую запись с начальным значением 1
-            else hashMapUser.put(logEntry.getIp(), 1);
+            {
+                if (hashMapUser.containsKey(logEntry.getIp()))
+                    hashMapUser.put(logEntry.getIp(), hashMapUser.get(logEntry.getIp()) + 1);
+                    // Если нет, добавляем новую запись с начальным значением 1
+                else hashMapUser.put(logEntry.getIp(), 1);
+            }
         }
     }
 
@@ -119,14 +123,14 @@ public class Statistics {
     // Среднее количества посещений сайта за час
     public double getAverageVisitsPerHour() {
         Duration duration = Duration.between(minTime, maxTime);
-        if (duration.toHours() > 0) return Math.abs(browserVisitCount / duration.toHours());
+        if (duration.toSeconds()/3600.0 > 0) return Math.abs(browserVisitCount / (duration.toSeconds()/3600.0));
         else return 0;
     }
 
     // Среднее количества ошибочных запросов за час
     public double getAverageErrRequestsPerHour() {
         Duration duration = Duration.between(minTime, maxTime);
-        if (duration.toHours() > 0) return Math.abs(errRequestsCount / duration.toHours());
+        if (duration.toSeconds()/3600.0 > 0) return Math.abs(errRequestsCount / (duration.toSeconds()/3600.0));
         else return 0;
     }
 
