@@ -33,6 +33,8 @@ public class UserAgent {
         return "Other";
     }
 
+
+    //Fix
     public boolean isBot() {
         return userAgent.toLowerCase().matches(".*bot\\b.*");
     }

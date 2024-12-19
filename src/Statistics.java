@@ -58,6 +58,7 @@ public class Statistics {
             notExistingPages.add(logEntry.getReferrer()); // Добавляем адрес страницы, если код ответа 404
         }
 
+        //Fix
         if (logEntry.getIp()!=null) {
             if(!agent.isBot())
             // Если есть, увеличиваем счетчик на 1
@@ -121,6 +122,7 @@ public class Statistics {
     }
 
     // Среднее количества посещений сайта за час
+    //Fix
     public double getAverageVisitsPerHour() {
         Duration duration = Duration.between(minTime, maxTime);
         if (duration.toSeconds()/3600.0 > 0) return Math.abs(browserVisitCount / (duration.toSeconds()/3600.0));
@@ -128,6 +130,7 @@ public class Statistics {
     }
 
     // Среднее количества ошибочных запросов за час
+    //Fix
     public double getAverageErrRequestsPerHour() {
         Duration duration = Duration.between(minTime, maxTime);
         if (duration.toSeconds()/3600.0 > 0) return Math.abs(errRequestsCount / (duration.toSeconds()/3600.0));
