@@ -17,12 +17,13 @@ public class Statistics {
     int browserVisitCount = 0;
     int errRequestsCount = 0;
     HashMap<String, Integer> hashMapUser = new HashMap<>();
-    HashMap<Long, Integer> hashMapVisitsPerSecond = new HashMap<>();
+    HashMap<LocalDateTime, Integer> hashMapVisitsPerSecond = new HashMap<>();
+//    HashMap<Long, Integer> hashMapVisitsPerSecond = new HashMap<>();
     LocalDateTime currentTime;
     int maxUserPerSecond = 0;
     int maxVisits = 0;
     HashSet<String> domainSet = new HashSet<>();
-    HashMap<String,Integer> hashMapUserVisitCount = new HashMap<>();
+    HashMap<String, Integer> hashMapUserVisitCount = new HashMap<>();
 
     public Statistics() {
     }
@@ -75,14 +76,15 @@ public class Statistics {
 
         if (currentTime == null) currentTime = logEntry.getData();
 
-        if (currentTime != null) {
+        if (/*currentTime != null && */!agent.isBot()) {
             // Если секунда та же, увеличиваем количество юзеров на 1
-            if (currentTime.equals(logEntry.getData())) {
-                int currentUserCount = hashMapVisitsPerSecond.getOrDefault(currentTime.toEpochSecond(ZoneOffset.UTC), 0);
-                hashMapVisitsPerSecond.put(currentTime.toEpochSecond(ZoneOffset.UTC), currentUserCount + 1);
+            if (hashMapVisitsPerSecond.containsKey(logEntry.getData())) {
+//                int currentUserCount;
+//                currentUserCount = hashMapVisitsPerSecond.getOrDefault(currentTime.toEpochSecond(ZoneOffset.UTC), 0);
+                hashMapVisitsPerSecond.put(logEntry.getData(), hashMapVisitsPerSecond.get(logEntry.getData()) + 1);
             }
             // Если нет, добавляем новую запись с начальным значением 1
-            else hashMapVisitsPerSecond.put(logEntry.getData().toEpochSecond(ZoneOffset.UTC), 1);
+            else hashMapVisitsPerSecond.put(logEntry.getData(), 1);
         }
 
         List<String> referrers = List.of(logEntry.getReferrer());
@@ -104,7 +106,7 @@ public class Statistics {
 
         List<String> users = List.of(logEntry.getIp());
         for (String user : users) {
-            if (user != null && !user.isEmpty()&& !agent.isBot()) {
+            if (user != null && !user.isEmpty() && !agent.isBot()) {
                 hashMapUserVisitCount.put(logEntry.getIp(), hashMapUserVisitCount.getOrDefault(logEntry.getIp(), 0) + 1);
             }
         }
@@ -196,13 +198,13 @@ public class Statistics {
     }
 
     //Список сайтов, со страниц которых есть ссылки на текущий сайт
-    public ArrayList<String> getReferrerDomains(){
+    public ArrayList<String> getReferrerDomains() {
         return new ArrayList<>(domainSet);
     }
 
     //Максимальная посещаемость одним юзером
-    public int getMaxVisitsByUser(){
-        hashMapUserVisitCount.forEach((K,V) ->{
+    public int getMaxVisitsByUser() {
+        hashMapUserVisitCount.forEach((K, V) -> {
             if (V > maxVisits) {
                 maxVisits = V;
             }
